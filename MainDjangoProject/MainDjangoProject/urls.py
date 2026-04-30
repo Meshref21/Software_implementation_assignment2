@@ -22,5 +22,7 @@ urlpatterns = [
     path('', include('login.urls')),
     path('test/', include('API.urls')),
     path('', include('CreateEditBudget.urls')),
+    path('api/', include('API.urls')),
+    path('transactions/', include('addTransactions.urls')),
 
 ]
