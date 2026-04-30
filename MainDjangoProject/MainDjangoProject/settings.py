@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'login.apps.LoginConfig',
     'API',
     'rest_framework',
+    'CreateEditBudget.apps.CreateeditbudgetConfig',
     
 
 ]

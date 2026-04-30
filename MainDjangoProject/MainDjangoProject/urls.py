@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('login.urls')),
     path('test/', include('API.urls')),
+    path('', include('CreateEditBudget.urls')),
 
 ]
