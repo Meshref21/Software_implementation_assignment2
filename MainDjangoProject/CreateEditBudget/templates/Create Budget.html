@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Create / Edit Budget</title>
+</head>
+
+<body>
+
+    <header class="app-header">
+        <h1>Budget Management</h1>
+    </header>
+
+     <main class="budget-page">
+
+    <section class="budget-card">
+
+      <header class="budget-card-header">
+        <h2>Create / Edit Budget</h2>
+        <p>Set a budget by category, amount, and period.</p>
+      </header>
+
+      <form class="budget-form" id="budgetForm">
+
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select id="category" name="category" required>
+            <option value="">Select category</option>
+            <option value="food">Food</option>
+            <option value="transport">Transport</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="bills">Bills</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="amount">Budget Amount</label>
+          <input
+            type="number"
+            id="amount"
+            name="amount"
+            placeholder="Enter amount"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="period">Period</label>
+          <select id="period" name="period" required>
+            <option value="">Select period</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit">Save Budget</button>
+          <button type="reset">Cancel</button>
+        </div>
+
+      </form>
+
+    </section>
+
+    <section class="budget-summary">
+      <h3>Budget Summary</h3>
+
+      <div class="summary-item">
+        <span>Total Budget</span>
+        <strong>$0.00</strong>
+      </div>
+
+      <div class="summary-item">
+        <span>Remaining Amount</span>
+        <strong>$0.00</strong>
+      </div>
+    </section>
+
+    <section class="budget-list">
+      <h3>Existing Budgets</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Period</th>
+            <th>Remaining</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Food</td>
+            <td>$500</td>
+            <td>Monthly</td>
+            <td>$320</td>
+            <td>
+              <button>Edit</button>
+              <button>Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="success-message" hidden>
+      Budget saved successfully.
+    </div>
+
+  </main>
+
+</body>
+</html>
