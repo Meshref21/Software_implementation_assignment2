@@ -8,12 +8,13 @@
 </head>
 <body>
 
-    <form action="" method="post">
-        
-        <label for="expense_income">Choose Expense or Income: </label>
-        <select name="expense_income" id="expense_income">
-            <option value="expense">Expense</option>
-            <option value="income">Income</option>
+    <!--I WILL USE JS SOON! -->
+    <form action="http://localhost:8000/api/transaction/" method="post">
+        {% csrf_token %}
+        <label for="isIncome">Choose Expense or Income: </label>
+        <select name="isIncome" id="expense_income">
+            <option value="False">Expense</option>
+            <option value="True">Income</option>
         </select>
 
         <br><br>
@@ -21,6 +22,10 @@
         <label for="category">Category: </label>
         <select name="category" id="category">
             <option value="food">Food</option>
+            <option value="transport">Transport</option>
+            <option value="shopping">Shopping</option>
+            <option value="salary">Salary</option>
+            <option value="other">Other</option>
         </select>
 
         <br><br>
@@ -30,13 +35,13 @@
 
         <br><br>
 
-        <label for="desc">Description: </label>
-        <input name="desc" id="desc" type="text">
+        <label for="description">Description: </label>
+        <input name="description" id="desc" type="text">
 
         <br><br>
 
-        <label for="payment_method">Enter Payment Method: </label>
-        <select name="payment_method" id="payment_method">
+        <label for="paymentMethod">Enter Payment Method: </label>
+        <select name="paymentMethod" id="payment_method">
             <option value="credit_card">Credit Card</option>
             <option value="master_card">Master Card</option>
             <option value="visa">Visa</option>
