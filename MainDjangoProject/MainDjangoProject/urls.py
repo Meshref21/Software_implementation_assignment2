@@ -24,5 +24,6 @@ urlpatterns = [
     path("", include("CreateEditBudget.urls")),
     path('api/', include('API.urls')),
     path('transactions/', include('addTransactions.urls')),
-
+    path('viewreport/', include('viewReport.urls')),
+    
 ]

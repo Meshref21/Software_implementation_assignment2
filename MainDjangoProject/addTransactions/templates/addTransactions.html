@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Transaction</title>
-    <script src="./postData.js" defer></script>
+
+    <!-- {% load static %} -->
+    <!-- <script {src={%static "../static/postData.js" %} defer></script> -->
 </head>
 <body>
 
-    <!--I WILL USE JS SOON! -->
-    <form action="http://localhost:8000/api/transaction/" method="post">
+    <form id="input_fields">
         {% csrf_token %}
         <label for="isIncome">Choose Expense or Income: </label>
         <select name="isIncome" id="expense_income">
@@ -52,6 +53,27 @@
 
         <button type="submit">Submit</button>
     </form>
+
+<script>
+
+let userInput = document.getElementById("input_fields");
+
+userInput.addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+    const InputForm = new FormData(userInput);
+
+    const response = await fetch("http://127.0.0.1:8000/api/transaction/", {
+        method: 'POST',
+        body: InputForm
+    });
+
+    // const result = await response.json();
+    // console.log(result);
+
+})
+
+</script>
 
 </body>
 </html> 

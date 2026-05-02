@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'API',
     'rest_framework',
     'CreateEditBudget.apps.CreateeditbudgetConfig',
+    'viewReport',
     
 
 ]
@@ -74,6 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'MainDjangoProject.wsgi.application'
+STATIC_URL = "/static/"
 
 
 # Database
@@ -111,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Cairo'
 
 USE_I18N = True
 
