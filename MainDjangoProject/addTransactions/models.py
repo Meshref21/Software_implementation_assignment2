@@ -22,6 +22,6 @@ class Transaction(models.Model):
     category = models.CharField(max_length=50, choices=categoryChoices)
     paymentMethod = models.CharField(max_length=50, choices=paymentChoices)
     description = models.CharField(max_length=200)
-    
+    transactionDate = models.DateTimeField(auto_now_add=True)
 
     

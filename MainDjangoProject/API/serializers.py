@@ -10,5 +10,5 @@ class BlogPostSerializer(serializers.ModelSerializer):
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ['id', 'isIncome', 'amount', 'category', 'paymentMethod', 'description']
+        fields = ['id', 'isIncome', 'amount', 'category', 'paymentMethod', 'description', 'transactionDate']
 

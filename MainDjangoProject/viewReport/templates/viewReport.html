@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Reports</title>
+</head>
+<body>
+
+    <div>
+        <h1>Financial Reports</h1>
+
+        <nav>
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Transactions</a></li>
+                <li><a href="#">Reports</a></li>
+                <li><a href="#">Settings</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div>
+
+        <!-- Reports Screen -->
+        <div>
+            <h2>Reports</h2>
+            <p>
+                View visual reports and charts of your income, expenses,
+                and spending patterns.
+            </p>
+        </div>
+
+        <!-- Date Range Selection -->
+        <div>
+            <h2>Select Date Range</h2>
+
+            <form id="input_date_form" action="#" method="get">
+                
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start_date" name="startdate">
+
+                <br><br>
+
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end_date" name="enddate">
+
+                <br><br>
+
+                <button type="submit">Generate Report</button>
+            </form>
+        </div>
+    </div>
+
+    <canvas id="myChart" width="?" height="?"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../static/main.js"></script>
+    <footer>
+        <p>&copy; 2026 Financial Reports System. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
