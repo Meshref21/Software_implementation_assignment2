@@ -1,6 +1,6 @@
-from django.urls import  path
-from . import views 
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('CreataBudget/', views.go_to_CreatBudget, name='Budget Creation'),
+    path("create-budget/", views.go_to_create_budget, name="create_budget"),
 ]
