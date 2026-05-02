@@ -74,6 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'MainDjangoProject.wsgi.application'
+STATIC_URL = "/static/"
 
 
 # Database

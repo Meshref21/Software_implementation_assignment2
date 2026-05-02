@@ -4,12 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Transaction</title>
-    <script src="./postData.js" defer></script>
+
+    {% load static %}
+    <script {src={%static "../static/postData.js" %} defer></script>
 </head>
 <body>
 
-    <!--I WILL USE JS SOON! -->
-    <form action="http://localhost:8000/api/transaction/" method="post">
+    <script>
+        
+    //     fetch("http://127.0.0.1:8000/api/transaction/")
+    // .then(response =>   
+    // {
+    //     if(!response.ok)
+    //     {   
+    //         throw new Error("Could not fetch resource")
+    //     }
+    //     return response.json();
+    // })
+    // .then(data => console.log(data))
+    // .catch(error => console.error(error));
+
+let userInput = document.getElementById("input_fields");
+
+userInput.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+
+    console.log(data);
+})
+
+async function fetchData() 
+{
+    try
+    {
+        const response = await fetch("http://127.0.0.1:8000/api/transaction/")
+
+        if(!response.ok)
+        {
+            throw new Error("Could not fetch resource")
+        }
+        const data = await response.json();
+        return data;
+    }
+    catch(error)
+    {
+        return error;
+    }
+}
+
+    </script>
+
+    <form id="input_fields">
         {% csrf_token %}
         <label for="isIncome">Choose Expense or Income: </label>
         <select name="isIncome" id="expense_income">
@@ -50,7 +95,7 @@
 
         <br><br>
 
-        <button type="submit">Submit</button>
+        <button onclick="fetchData()" type="submit">Submit</button>
     </form>
 
 </body>
