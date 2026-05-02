@@ -5,54 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Transaction</title>
 
-    {% load static %}
-    <script {src={%static "../static/postData.js" %} defer></script>
+    <!-- {% load static %} -->
+    <!-- <script {src={%static "../static/postData.js" %} defer></script> -->
 </head>
 <body>
-
-    <script>
-        
-    //     fetch("http://127.0.0.1:8000/api/transaction/")
-    // .then(response =>   
-    // {
-    //     if(!response.ok)
-    //     {   
-    //         throw new Error("Could not fetch resource")
-    //     }
-    //     return response.json();
-    // })
-    // .then(data => console.log(data))
-    // .catch(error => console.error(error));
-
-let userInput = document.getElementById("input_fields");
-
-userInput.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const data = new FormData(form);
-
-    console.log(data);
-})
-
-async function fetchData() 
-{
-    try
-    {
-        const response = await fetch("http://127.0.0.1:8000/api/transaction/")
-
-        if(!response.ok)
-        {
-            throw new Error("Could not fetch resource")
-        }
-        const data = await response.json();
-        return data;
-    }
-    catch(error)
-    {
-        return error;
-    }
-}
-
-    </script>
 
     <form id="input_fields">
         {% csrf_token %}
@@ -95,8 +51,29 @@ async function fetchData()
 
         <br><br>
 
-        <button onclick="fetchData()" type="submit">Submit</button>
+        <button type="submit">Submit</button>
     </form>
+
+<script>
+
+let userInput = document.getElementById("input_fields");
+
+userInput.addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+    const InputForm = new FormData(userInput);
+
+    const response = await fetch("http://127.0.0.1:8000/api/transaction/", {
+        method: 'POST',
+        body: InputForm
+    });
+
+    // const result = await response.json();
+    // console.log(result);
+
+})
+
+</script>
 
 </body>
 </html> 
