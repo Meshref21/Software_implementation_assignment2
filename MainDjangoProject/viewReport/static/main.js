@@ -45,12 +45,13 @@ userInput.addEventListener('submit', async (e) => {
 
 function renderPieChart(labels, data) {
     const ctx = document.getElementById('myChart').getContext('2d');
-
-    if (chartInstance) {
+    if (chartInstance) 
+    {
         chartInstance.destroy();
     }
 
-    chartInstance = new Chart(ctx, {
+    chartInstance = new Chart(ctx, 
+    {
         type: 'pie',
         data: {
             labels: labels,
@@ -67,11 +68,14 @@ function renderPieChart(labels, data) {
                 ]
             }]
         },
-        options: {
-            responsive: true,
-            plugins: {
+        options: 
+        {
+            responsive: false,
+            plugins: 
+            {
                 legend: { position: 'bottom' },
-                title: {
+                title: 
+                {
                     display: true,
                     text: 'Amount by Category'
                 }

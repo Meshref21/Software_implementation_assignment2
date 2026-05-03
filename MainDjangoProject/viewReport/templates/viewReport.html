@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Financial Reports</title>
+    <style>
+        .chart-container 
+        {
+    width: 400px;
+    height: 400px;
+    margin: 0 auto;
+        }
+
+    </style>
 </head>
 <body>
 
@@ -52,7 +61,10 @@
         </div>
     </div>
 
-    <canvas id="myChart" width="?" height="?"></canvas>
+    <div class="chart-container">
+    <canvas id="myChart"></canvas>
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../static/main.js"></script>
