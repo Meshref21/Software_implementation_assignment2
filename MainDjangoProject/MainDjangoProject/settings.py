@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'CreateEditBudget.apps.CreateeditbudgetConfig',
     'viewReport',
     'createGoals',
-    
+    'registerUser',
 
 ]
 
