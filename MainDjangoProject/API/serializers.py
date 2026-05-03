@@ -17,9 +17,9 @@ class TransactionSerializer(serializers.ModelSerializer):
 class RegisterUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegisterUser
-        fields = ['name', 'email', 'password']
+        fields = ['id', 'name', 'email', 'password']
     
 class CreateEditBudgetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Budget
-        fields = ['category', 'amount', 'period', 'start_date', 'end_date', 'remaining_amount', 'created_at', 'updated_at']
+        fields = ['id', 'category', 'amount', 'period', 'start_date', 'end_date', 'remaining_amount', 'created_at', 'updated_at']
