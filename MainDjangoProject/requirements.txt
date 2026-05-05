@@ -1,3 +1,5 @@
-Django==5.2.4
-pillow==11.3.0
-requests==2.32.3
+Django
+pillow
+requests
+djangorestframework
+environs

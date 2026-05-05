@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Transaction</title>
+
+    <!-- {% load static %} -->
+    <!-- <script {src={%static "../static/postData.js" %} defer></script> -->
+</head>
+<body>
+
+    <form id="input_fields">
+        {% csrf_token %}
+        <label for="isIncome">Choose Expense or Income: </label>
+        <select name="isIncome" id="expense_income">
+            <option value="False">Expense</option>
+            <option value="True">Income</option>
+        </select>
+
+        <br><br>
+
+        <label for="category">Category: </label>
+        <select name="category" id="category">
+            <option value="food">Food</option>
+            <option value="transport">Transport</option>
+            <option value="shopping">Shopping</option>
+            <option value="salary">Salary</option>
+            <option value="other">Other</option>
+        </select>
+
+        <br><br>
+
+        <label for="amount">Enter The Amount: </label>
+        <input name="amount" id="amount" type="number">
+
+        <br><br>
+
+        <label for="description">Description: </label>
+        <input name="description" id="desc" type="text">
+
+        <br><br>
+
+        <label for="paymentMethod">Enter Payment Method: </label>
+        <select name="paymentMethod" id="payment_method">
+            <option value="credit_card">Credit Card</option>
+            <option value="master_card">Master Card</option>
+            <option value="visa">Visa</option>
+            <option value="mobile_wallet">Mobile Wallet</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+<script>
+
+let userInput = document.getElementById("input_fields");
+
+userInput.addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+    const InputForm = new FormData(userInput);
+
+    const response = await fetch("http://127.0.0.1:8000/api/transaction/", {
+        method: 'POST',
+        body: InputForm
+    });
+
+    // const result = await response.json();
+    // console.log(result);
+
+})
+
+</script>
+
+</body>
+</html> 

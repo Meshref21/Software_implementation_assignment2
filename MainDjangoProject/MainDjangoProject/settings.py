@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+import createGoals
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,7 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'addTransactions',
     'login.apps.LoginConfig',
-    
+    'API',
+    'rest_framework',
+    'CreateEditBudget.apps.CreateeditbudgetConfig',
+    'viewReport',
+    'createGoals',
+    'registerUser',
+
 ]
 
 MIDDLEWARE = [
@@ -70,6 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'MainDjangoProject.wsgi.application'
+STATIC_URL = "/static/"
 
 
 # Database
@@ -107,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Cairo'
 
 USE_I18N = True
 
