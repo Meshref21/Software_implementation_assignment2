@@ -9,7 +9,7 @@ from .models import Goal
 
 
 def goal_list(request):
-    user = get_goal_user(request)
+    user = request.user
 
     if request.user.is_authenticated:
         goals = Goal.objects.filter(user=user)
@@ -29,7 +29,7 @@ def create_goal(request):
         deadline = request.POST.get('deadline')
 
         if name and target_amount and deadline:
-            user = get_goal_user(request)
+            user = request.user
 
             Goal.objects.create(
                 user=user,
@@ -50,7 +50,7 @@ def create_goal(request):
 
 
 def update_goal_progress(request, goal_id):
-    user = get_goal_user(request)
+    user = request.user
 
     goal = get_object_or_404(Goal, id=goal_id, user=user)
 
@@ -72,7 +72,7 @@ def update_goal_progress(request, goal_id):
 
 
 def delete_goal(request, goal_id):
-    user = get_goal_user(request)
+    user = request.user
 
     goal = get_object_or_404(Goal, id=goal_id, user=user)
 
