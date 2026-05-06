@@ -6,6 +6,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body>
+
+    <div id="navbar"></div>
+
     <h1>Login</h1>
 
     {% if error %}
@@ -26,6 +29,10 @@
     <br>
     <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
     <script src="{% static 'loginFetch.js' %}"></script>
+
+
+    <footer id="footer"></footer>
+    <script src="{% static 'navbar_footer.js' %}"></script>
 
 </body>
 </html>

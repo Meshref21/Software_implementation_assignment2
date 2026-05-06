@@ -9,6 +9,8 @@
 </head>
 <body>
 
+    <div id="navbar"></div>
+
 <form id="user_input">
     {% csrf_token %}
     <div class="container">
@@ -55,6 +57,10 @@ userInput.addEventListener('submit', async (e) => {
     console.log(apiResponse);
 
 })}
+
 </script>
+
+    <footer id="footer"></footer>
+    <script src="{% static 'navbar_footer.js' %}"></script>
 </body>
 </html>

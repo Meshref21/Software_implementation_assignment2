@@ -70,3 +70,10 @@ th, td {
     border-bottom: 1px solid var(--border);
 }
 th { background-color: #f1f5f9; }
+
+.chart-container 
+{
+width: 400px;
+height: 400px;
+margin: 0 auto;
+}
