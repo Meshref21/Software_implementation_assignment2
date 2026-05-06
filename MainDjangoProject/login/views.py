@@ -30,9 +30,9 @@ def login_view(request):
 
         user = authenticate(request, username=username, password=password)
 
+        print(user)
         if user is not None:
             login(request, user)
-
             if next_url:
                 return redirect(next_url)
             return redirect("/home")  # name of your home url
