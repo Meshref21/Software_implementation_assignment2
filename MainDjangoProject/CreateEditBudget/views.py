@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Budget
+from django.contrib.auth.decorators import login_required
+
+
+@login_required
 
 def go_to_create_budget(request):
     if request.method == "POST":

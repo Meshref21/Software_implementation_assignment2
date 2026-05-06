@@ -1,4 +1,9 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+
+
+@login_required
 
 def addViewReportPage(request):
     return render(request, "viewReport.html")

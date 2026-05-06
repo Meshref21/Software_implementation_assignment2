@@ -1,28 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from .models import Goal
 
 
-def get_goal_user(request):
-    """
-    Temporary testing helper.
-
-    If the user is logged in, use request.user.
-    If not logged in, use/create a test user.
-    Later, when login is ready, remove this and use @login_required.
-    """
-
-    if request.user.is_authenticated:
-        return request.user
-
-    test_user, created = User.objects.get_or_create(username='testuser')
-
-    if created:
-        test_user.set_password('testpass123')
-        test_user.save()
-
-    return test_user
+@login_required
 
 
 def goal_list(request):
