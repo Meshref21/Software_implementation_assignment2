@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'viewReport',
     'createGoals',
     'registerUser',
+    'Home',
+
 
 ]
 

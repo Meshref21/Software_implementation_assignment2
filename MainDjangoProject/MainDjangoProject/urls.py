@@ -26,4 +26,5 @@ urlpatterns = [
     path('transactions/', include('addTransactions.urls')),
     path('viewreport/', include('viewReport.urls')),
     path('goals/', include('createGoals.urls')),
+    path('home/', include('Home.urls')),
 ]
