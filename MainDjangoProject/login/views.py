@@ -12,13 +12,13 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('/home/')  # Redirect to a home page or dashboard after successful login
+            return redirect('/goals/')  # Redirect to a home page or dashboard after successful login
         else:   
-            return render(request, 'login/login.html', {
+            return render(request, 'login.html', {
                 'error': 'Invalid username or password'
             })
         
         
-    return render(request, 'login/login.html')
+    return render(request, 'login.html')
 
 

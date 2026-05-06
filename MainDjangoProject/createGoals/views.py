@@ -1,17 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Goal
-
+from django.contrib.auth.models import User
 
 
 def goal_list(request):
-    goals = Goal.objects.filter(user=request.user)
+    if request.user.is_authenticated:      
+        goals = Goal.objects.filter(user=request.user)
+    else:
+        goals = Goal.objects.all()           
 
     return render(request, 'goals/goal_list.html', {
         'goals': goals
     })
-
 
 
 def create_goal(request):
@@ -21,14 +22,19 @@ def create_goal(request):
         deadline = request.POST.get('deadline')
 
         if name and target_amount and deadline:
+
+            if request.user.is_authenticated:
+                user = request.user
+            else:
+                user = User.objects.first()
+
             Goal.objects.create(
-                user=request.user,
+                user=user,
                 name=name,
                 target_amount=target_amount,
                 current_amount=0,
                 deadline=deadline
             )
-
             messages.success(request, 'Goal created successfully!')
             return redirect('goal_list')
         else:
@@ -37,9 +43,8 @@ def create_goal(request):
     return render(request, 'goals/create_goal.html')
 
 
-
 def update_goal_progress(request, goal_id):
-    goal = get_object_or_404(Goal, id=goal_id, user=request.user)
+    goal = get_object_or_404(Goal, id=goal_id) 
 
     if request.method == 'POST':
         current_amount = request.POST.get('current_amount')
@@ -47,7 +52,6 @@ def update_goal_progress(request, goal_id):
         if current_amount:
             goal.current_amount = current_amount
             goal.save()
-
             messages.success(request, 'Goal progress updated!')
             return redirect('goal_list')
         else:
