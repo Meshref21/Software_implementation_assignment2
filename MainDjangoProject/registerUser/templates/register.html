@@ -9,6 +9,10 @@
 </head>
 <body>
 
+    <form method="post" action="/logout/">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+    </form>
     <div id="navbar"></div>
 
 <form id="user_input" method="post">

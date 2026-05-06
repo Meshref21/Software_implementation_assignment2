@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+# from django.shortcuts import render, redirect
+# from django.contrib.auth import authenticate, login
 
 # def login_view(request):
 #     return render(request, "login.html")
@@ -16,7 +16,8 @@ from django.contrib.auth import authenticate, login
 # ]
 
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.http import require_POST
 
 def login_view(request):
     if request.method == "POST":
@@ -24,21 +25,20 @@ def login_view(request):
         password = request.POST.get("password")
         next_url = request.POST.get("next")
 
-
-        print("USERNAME", username)
-        print("Password", password)
-
         user = authenticate(request, username=username, password=password)
 
-        print(user)
         if user is not None:
             login(request, user)
             if next_url:
                 return redirect(next_url)
-            return redirect("/home")  # name of your home url
+            return redirect("home")
 
         else:
             return render(request, "login.html", {"error": "Invalid credentials"})
 
-    print("Hello")
     return render(request, "login.html")
+
+@require_POST
+def logout_view(request):
+    logout(request)
+    return redirect("login")
