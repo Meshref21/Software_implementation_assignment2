@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Transaction(models.Model):
     
@@ -17,6 +18,7 @@ class Transaction(models.Model):
         ("mobile_wallet", "Mobile Wallet"),
     ]
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     isIncome = models.BooleanField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=50, choices=categoryChoices)
