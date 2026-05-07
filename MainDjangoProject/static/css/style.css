@@ -115,15 +115,37 @@ th {
     text-align: left;
 }
 
+HEAD
 td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
 }
 
 /* Charts */
-.chart-container {
-    padding: 20px;
-    background: white;
-    border-radius: 12px;
-    margin-top: 20px;
+.chart-container 
+{
+width: 400px;
+height: 400px;
+margin: 0 auto;
+}
+
+.goal-pie-chart {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 20px 0;
+    background-color: #e0e0e0;
+}
+
+.goal-pie-inner {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    background-color: white;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+    color: #111827;
 }

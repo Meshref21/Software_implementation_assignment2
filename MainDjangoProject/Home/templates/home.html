@@ -6,8 +6,13 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body>
+
     <h1>Home</h1>
 
+    <form method="post" action="/logout/">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+    </form>
     <div id="navbar"></div>
 
     <footer id="footer"></footer>

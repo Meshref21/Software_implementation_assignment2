@@ -12,8 +12,6 @@ document.getElementById("navbar").innerHTML = `
     <li><a href="/create-budget">Create Budget</a></li>
     <li><a href="/viewreport">Report</a></li>
     <li><a href="/transactions">Transactions</a></li>
-    <li><a href="/register">Register</a></li>
-    <li><a href="/login">Login</a></li>
     </ul>
 </nav>
 `;
@@ -25,9 +23,9 @@ document.getElementById("footer").innerHTML = `
 
         <ul class="footer-links">
           <li><a href="/home">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/services">Services</a></li>
-          <li><a href="/contact">Contact</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Services</a></li>
+          <li><a href="#">Contact</a></li>
         </ul>
       </div>
     </footer>

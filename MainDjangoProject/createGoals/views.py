@@ -1,32 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from .models import Goal
 
 
-def get_goal_user(request):
-    """
-    Temporary testing helper.
-
-    If the user is logged in, use request.user.
-    If not logged in, use/create a test user.
-    Later, when login is ready, remove this and use @login_required.
-    """
-
-    if request.user.is_authenticated:
-        return request.user
-
-    test_user, created = User.objects.get_or_create(username='testuser')
-
-    if created:
-        test_user.set_password('testpass123')
-        test_user.save()
-
-    return test_user
+@login_required
 
 
 def goal_list(request):
-    user = get_goal_user(request)
+    user = request.user
 
     if request.user.is_authenticated:
         goals = Goal.objects.filter(user=user)
@@ -46,7 +29,7 @@ def create_goal(request):
         deadline = request.POST.get('deadline')
 
         if name and target_amount and deadline:
-            user = get_goal_user(request)
+            user = request.user
 
             Goal.objects.create(
                 user=user,
@@ -67,7 +50,7 @@ def create_goal(request):
 
 
 def update_goal_progress(request, goal_id):
-    user = get_goal_user(request)
+    user = request.user
 
     goal = get_object_or_404(Goal, id=goal_id, user=user)
 
@@ -89,7 +72,7 @@ def update_goal_progress(request, goal_id):
 
 
 def delete_goal(request, goal_id):
-    user = get_goal_user(request)
+    user = request.user
 
     goal = get_object_or_404(Goal, id=goal_id, user=user)
 

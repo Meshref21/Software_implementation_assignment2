@@ -15,10 +15,13 @@
         <p style="color:red;">{{ error }}</p>
     {% endif %}
 
-    <form id="user_input">
+    <form id="user_input" method="post">
         {% csrf_token %}
-        <label>Email:</label>
-        <input type="text" name="email"><br><br>
+
+        <input type="hidden" name="next" value="{{ next }}">
+
+        <label>Username:</label>
+        <input type="text" name="username"><br><br>
 
         <label>Password:</label>
         <input type="password" name="password"><br><br>
@@ -28,7 +31,7 @@
 
     <br>
     <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
-    <script src="{% static 'loginFetch.js' %}"></script>
+    <!-- <script src="{% static 'loginFetch.js' %}"></script> -->
 
 
     <footer id="footer"></footer>
