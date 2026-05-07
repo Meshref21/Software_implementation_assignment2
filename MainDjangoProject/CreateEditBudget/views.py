@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required
-
 def go_to_create_budget(request):
     if request.method == "POST":
         category = request.POST.get("category")
@@ -15,6 +14,7 @@ def go_to_create_budget(request):
         end_date = request.POST.get("end_date")
 
         Budget.objects.create(
+            user=request.user,
             category=category,
             amount=amount,
             period=period,
@@ -26,7 +26,7 @@ def go_to_create_budget(request):
         messages.success(request, "Budget saved successfully.")
         return redirect("create_budget")
 
-    budgets = Budget.objects.all()
+    budgets = Budget.objects.filter(user=request.user)
     total_budget = sum(b.amount for b in budgets)
     total_remaining = sum(b.remaining_amount for b in budgets)
 
@@ -37,8 +37,9 @@ def go_to_create_budget(request):
     })
 
 
+@login_required
 def edit_budget(request, pk):
-    budget = get_object_or_404(Budget, pk=pk)
+    budget = get_object_or_404(Budget, pk=pk, user=request.user)
 
     if request.method == "POST":
         budget.category = request.POST.get("category")
@@ -55,8 +56,9 @@ def edit_budget(request, pk):
     return render(request, "Edit_Budget.html", {"budget": budget})
 
 
+@login_required
 def delete_budget(request, pk):
-    budget = get_object_or_404(Budget, pk=pk)
+    budget = get_object_or_404(Budget, pk=pk, user=request.user)
     budget.delete()
     messages.success(request, "Budget deleted successfully.")
     return redirect("create_budget")
