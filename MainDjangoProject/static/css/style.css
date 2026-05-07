@@ -1,79 +1,129 @@
-/* static/css/style.css */
+/* General Reset */
 :root {
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
-    --success: #10b981;
-    --warning: #f59e0b;
-    --danger: #ef4444;
-    --background: #f8fafc;
-    --card-bg: #ffffff;
-    --text-main: #1e293b;
-    --border: #e2e8f0;
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --primary: #2c3e50;
+    --secondary: #34495e;
+    --accent: #27ae60; /* Income Green */
+    --danger: #e74c3c; /* Expense Red */
+    --light: #f4f7f6;
+    --white: #ffffff;
+    --shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--background);
-    color: var(--text-main);
+    background-color: var(--light);
+    color: var(--primary);
     margin: 0;
-    padding: 20px;
+    line-height: 1.6;
 }
 
-/* Card layout for all sections */
-section, .budget-card, .container, .budget-summary, .budget-list {
-    background: var(--card-bg);
-    padding: 2rem;
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: var(--white);
     border-radius: 12px;
     box-shadow: var(--shadow);
-    margin-bottom: 2rem;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
-h1, h2, h3 { color: var(--primary); }
+/* Form Styling */
+h1, h2 {
+    color: var(--secondary);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
 
-/* Form Elements */
-.form-group { margin-bottom: 1.5rem; }
-label { display: block; font-weight: bold; margin-bottom: 0.5rem; }
-input, select {
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+input[type="text"], 
+input[type="number"], 
+input[type="password"], 
+input[type="date"], 
+select {
     width: 100%;
-    padding: 0.8rem;
-    border: 1px solid var(--border);
+    padding: 12px;
+    border: 1px solid #ddd;
     border-radius: 6px;
-    box-sizing: border-box; /* Prevents overflow */
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
 }
 
-/* Buttons */
-button, .registerbtn {
-    background-color: var(--primary);
+button {
+    background-color: var(--accent);
     color: white;
-    padding: 10px 20px;
+    padding: 12px 24px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
+    transition: background 0.3s ease;
 }
 
-button:hover { background-color: var(--primary-hover); }
+button:hover {
+    background-color: #219150;
+}
+
+.delete-btn {
+    background-color: var(--danger);
+}
+
+/* Card Styling for Goals and Budgets */
+.goal-card, .budget-card {
+    border: 1px solid #eee;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+/* Progress Bar (For Goals) */
+.progress-bar-container {
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    height: 20px;
+    margin: 15px 0;
+}
+
+.progress-bar {
+    background-color: var(--accent);
+    height: 100%;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+}
 
 /* Table Styling */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1rem;
+    margin-top: 20px;
 }
-th, td {
+
+th {
+    background-color: var(--primary);
+    color: white;
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid var(--border);
 }
-th { background-color: #f1f5f9; }
 
-.chart-container 
-{
-width: 400px;
-height: 400px;
-margin: 0 auto;
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Charts */
+.chart-container {
+    padding: 20px;
+    background: white;
+    border-radius: 12px;
+    margin-top: 20px;
 }
