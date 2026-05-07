@@ -4,79 +4,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financial Reports</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <title>Reports — Budgeter</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <style>
-
-
+        .report-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+        .chart-card {
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+        .chart-card .card-body {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .report-summary-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        #chart-placeholder {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 3rem;
+        }
+        #chart-placeholder .icon { font-size: 3rem; opacity: 0.3; margin-bottom: 0.75rem; }
+        @media (max-width: 900px) {
+            .report-grid { grid-template-columns: 1fr; }
+            .report-summary-row { grid-template-columns: 1fr 1fr; }
+        }
     </style>
 </head>
 <body>
 
-    <form method="post" action="/logout/">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-    </form>
-    <div id="navbar"></div>
+<div id="navbar"></div>
 
-    <div>
-        <h1>Financial Reports</h1>
+<div class="page-wrapper">
 
-        <nav>
-            <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Transactions</a></li>
-                <li><a href="#">Reports</a></li>
-                <li><a href="#">Settings</a></li>
-            </ul>
-        </nav>
-    </div>
+    <header class="page-header">
+        <div class="page-header-title">
+            <h1>Financial Reports</h1>
+            <p>Visualize your spending patterns over time</p>
+        </div>
+    </header>
 
-    <div>
+    <main class="main-content">
 
-        <!-- Reports Screen -->
-        <div>
-            <h2>Reports</h2>
-            <p>
-                View visual reports and charts of your income, expenses,
-                and spending patterns.
-            </p>
+        <!-- Summary Row (populated after report generation) -->
+        <div class="report-summary-row" id="report-summary" style="display:none;">
+            <div class="stat-card">
+                <div class="stat-icon green">💰</div>
+                <div class="stat-info">
+                    <div class="stat-label">Income</div>
+                    <div class="stat-value income" id="rpt-income">$0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red">💸</div>
+                <div class="stat-info">
+                    <div class="stat-label">Expenses</div>
+                    <div class="stat-value expense" id="rpt-expense">$0</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon indigo">📊</div>
+                <div class="stat-info">
+                    <div class="stat-label">Transactions</div>
+                    <div class="stat-value" id="rpt-count">0</div>
+                </div>
+            </div>
         </div>
 
-        <!-- Date Range Selection -->
-        <div>
-            <h2>Select Date Range</h2>
+        <div class="report-grid">
 
-            <form id="input_date_form" action="#" method="get">
-                
-                <label for="start-date">Start Date:</label>
-                <input type="date" id="start_date" name="startdate">
+            <!-- Filter Panel -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3>Filter Report</h3>
+                        <p>Select a date range to analyze</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="input_date_form">
 
-                <br><br>
+                        <div class="form-group">
+                            <label for="start_date">Start Date</label>
+                            <input type="date" id="start_date" name="startdate">
+                        </div>
 
-                <label for="end-date">End Date:</label>
-                <input type="date" id="end_date" name="enddate">
+                        <div class="form-group">
+                            <label for="end_date">End Date</label>
+                            <input type="date" id="end_date" name="enddate">
+                        </div>
 
-                <br><br>
+                        <div class="form-group">
+                            <label for="chart-type">Chart Type</label>
+                            <select id="chart-type">
+                                <option value="pie">Pie Chart</option>
+                                <option value="bar">Bar Chart</option>
+                                <option value="doughnut">Doughnut Chart</option>
+                            </select>
+                        </div>
 
-                <button type="submit">Generate Report</button>
-            </form>
+                        <div class="form-group">
+                            <label for="filter-type">Show</label>
+                            <select id="filter-type">
+                                <option value="all">All Transactions</option>
+                                <option value="expense">Expenses Only</option>
+                                <option value="income">Income Only</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-full" style="justify-content:center;">
+                            📈 Generate Report
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Chart Panel -->
+            <div class="card chart-card">
+                <div class="card-header">
+                    <div>
+                        <h3 id="chart-title">Spending by Category</h3>
+                        <p id="chart-subtitle">Generate a report to see your data</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="chart-placeholder">
+                        <div class="icon">📊</div>
+                        <p>Select a date range and click<br><strong>Generate Report</strong></p>
+                    </div>
+                    <div id="chart-wrapper" style="display:none; width:100%; max-width:420px;">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </div>
 
-    <div class="chart-container">
-    <canvas id="myChart"></canvas>
-    </div>
+        <!-- Breakdown Table -->
+        <div class="card mt-2" id="breakdown-card" style="display:none;">
+            <div class="card-header">
+                <h3>Category Breakdown</h3>
+            </div>
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Transactions</th>
+                            <th>Total Amount</th>
+                            <th>Share</th>
+                        </tr>
+                    </thead>
+                    <tbody id="breakdown-tbody"></tbody>
+                </table>
+            </div>
+        </div>
 
+    </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{% static 'viewReportFetch.js' %}"></script>
-    <footer>
-        <p>&copy; 2026 Financial Reports System. All rights reserved.</p>
-    </footer>
+    <div id="footer"></div>
+</div>
 
-    <footer id="footer"></footer>
-    <script src="{% static 'navbar_footer.js' %}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'viewReportFetch.js' %}"></script>
+<script src="{% static 'navbar_footer.js' %}"></script>
 </body>
 </html>

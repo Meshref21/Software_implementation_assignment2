@@ -2,160 +2,179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Create / Edit Budget</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budgets — Budgeter</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-
 <body>
 
-    <form method="post" action="/logout/">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-    </form>
+<div id="navbar"></div>
 
-    <div id="navbar"></div>
+<div class="page-wrapper">
 
-<header class="app-header">
-    <h1>Budget Management</h1>
-</header>
+    <header class="page-header">
+        <div class="page-header-title">
+            <h1>Budget Management</h1>
+            <p>Set spending limits and track your remaining balance</p>
+        </div>
+    </header>
 
-<main class="budget-page">
+    <main class="main-content">
 
-    <!-- ================= FORM ================= -->
-    <section class="budget-card">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success">✅ {{ message }}</div>
+            {% endfor %}
+        {% endif %}
 
-        <header class="budget-card-header">
-            <h2>Create / Edit Budget</h2>
-            <p>Set a budget by category, amount, and period.</p>
-        </header>
-
-        <form method="POST">
-            {% csrf_token %}
-
-            <div class="form-group">
-                <label for="category">Category</label>
-                <select id="category" name="category" required>
-                    <option value="">Select category</option>
-                    <option value="food">Food</option>
-                    <option value="transport">Transport</option>
-                    <option value="entertainment">Entertainment</option>
-                    <option value="bills">Bills</option>
-                </select>
+        <!-- Summary Cards -->
+        <div class="budget-summary-grid mb-3">
+            <div class="budget-summary-item">
+                <span class="budget-summary-label">Total Budget</span>
+                <span class="budget-summary-value text-primary">${{ total_budget }}</span>
             </div>
-
-            <div class="form-group">
-                <label for="amount">Budget Amount</label>
-                <input
-                    type="number"
-                    id="amount"
-                    name="amount"
-                    placeholder="Enter amount"
-                    required
-                />
+            <div class="budget-summary-item">
+                <span class="budget-summary-label">Total Remaining</span>
+                <span class="budget-summary-value text-success">${{ total_remaining }}</span>
             </div>
-
-            <div class="form-group">
-                <label for="start_date">Start Date</label>
-                <input
-                    type="date"
-                    id="start_date"
-                    name="start_date"
-                    required
-                />
-            </div>
-
-            <div class="form-group">
-                <label for="end_date">End Date</label>
-                <input
-                    type="date"
-                    id="end_date"
-                    name="end_date"
-                    required
-                />
-            </div>
-
-            <div class="form-group">
-                <label for="period">Period</label>
-                <select id="period" name="period" required>
-                    <option value="">Select period</option>
-                    <option value="weekly">Weekly</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
-                </select>
-            </div>
-
-            <div class="form-actions">
-                <button type="submit">Save Budget</button>
-                <button type="reset">Cancel</button>
-            </div>
-
-        </form>
-
-    </section>
-
-    <!-- ================= SUMMARY ================= -->
-    <section class="budget-summary">
-        <h3>Budget Summary</h3>
-
-        <div class="summary-item">
-            <span>Total Budget</span>
-            <strong>${{ total_budget }}</strong>
         </div>
 
-        <div class="summary-item">
-            <span>Remaining Amount</span>
-            <strong>${{ total_remaining }}</strong>
+        <div class="two-col" style="align-items:start;">
+
+            <!-- Create Budget Form -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3>Create New Budget</h3>
+                        <p>Set a budget by category and period</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category" required>
+                                <option value="">Select a category…</option>
+                                <option value="food">🍔 Food</option>
+                                <option value="transport">🚗 Transport</option>
+                                <option value="entertainment">🎬 Entertainment</option>
+                                <option value="bills">🧾 Bills</option>
+                                <option value="shopping">🛍️ Shopping</option>
+                                <option value="other">📦 Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="amount">Budget Amount</label>
+                                <input
+                                    type="number"
+                                    id="amount"
+                                    name="amount"
+                                    placeholder="0.00"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="period">Period</label>
+                                <select id="period" name="period" required>
+                                    <option value="">Select period…</option>
+                                    <option value="weekly">Weekly</option>
+                                    <option value="monthly">Monthly</option>
+                                    <option value="yearly">Yearly</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="start_date">Start Date</label>
+                                <input type="date" id="start_date" name="start_date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_date">End Date</label>
+                                <input type="date" id="end_date" name="end_date" required>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Save Budget</button>
+                            <button type="reset" class="btn btn-ghost">Clear</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Budget List -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3>Existing Budgets</h3>
+                        <p>{{ budgets|length }} budget{{ budgets|length|pluralize }} configured</p>
+                    </div>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Period</th>
+                                <th>Remaining</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for budget in budgets %}
+                            <tr>
+                                <td class="fw-600">{{ budget.category|capfirst }}</td>
+                                <td>${{ budget.amount }}</td>
+                                <td>
+                                    <span class="badge badge-indigo">{{ budget.period|capfirst }}</span>
+                                </td>
+                                <td>
+                                    {% if budget.remaining_amount > 0 %}
+                                        <span class="text-success fw-600">${{ budget.remaining_amount }}</span>
+                                    {% else %}
+                                        <span class="text-danger fw-600">${{ budget.remaining_amount }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="td-actions">
+                                        <a href="{% url 'edit_budget' budget.pk %}" class="btn btn-ghost btn-sm">✏️ Edit</a>
+                                        <a href="{% url 'delete_budget' budget.pk %}"
+                                           class="btn btn-danger btn-sm"
+                                           onclick="return confirm('Delete this budget?')">🗑️ Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">📊</div>
+                                        <p>No budgets yet. Create your first one!</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-    </section>
 
-    <!-- ================= TABLE ================= -->
-    <section class="budget-list">
-        <h3>Existing Budgets</h3>
+    </main>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Amount</th>
-                    <th>Period</th>
-                    <th>Remaining</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for budget in budgets %}
-                <tr>
-                    <td>{{ budget.category }}</td>
-                    <td>${{ budget.amount }}</td>
-                    <td>{{ budget.period }}</td>
-                    <td>${{ budget.remaining_amount }}</td>
-                    <td>
-                        <a href="{% url 'edit_budget' budget.pk %}"><button type="button">Edit</button></a>
-                        <a href="{% url 'delete_budget' budget.pk %}"><button type="button">Delete</button></a>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5">No budgets yet.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </section>
+    <div id="footer"></div>
+</div>
 
-    <!-- ================= SUCCESS MESSAGE ================= -->
-    {% if messages %}
-        {% for message in messages %}
-        <div class="success-message">
-            {{ message }}
-        </div>
-        {% endfor %}
-    {% endif %}
-
-</main>
-
-    <footer id="footer"></footer>
-    <script src="{% static 'navbar_footer.js' %}"></script>
+<script src="{% static 'navbar_footer.js' %}"></script>
 </body>
 </html>

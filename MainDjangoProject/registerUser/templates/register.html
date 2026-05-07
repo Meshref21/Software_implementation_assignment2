@@ -4,40 +4,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <title>Register</title>
+    <title>Create Account — Budgeter</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
-    <div id="navbar"></div>
-    
-    <form id="user_input" method="post">
-    {% csrf_token %}
-    <div class="container">
-    <h1>Register</h1>
-    <p>Please fill in this form to create an account.</p>
-    <hr>
+<div class="auth-page">
+    <div class="auth-card">
 
-    <label for="username"><b>Username: </b></label>
-    <input type="text" name="username" id="name" required>
-    <hr>
-    
-    <label for="email"><b>Email: </b></label>
-    <input type="text" placeholder="Enter Email" name="email" id="email" required>
+        <div class="auth-logo">
+            <div class="auth-logo-icon">💰</div>
+            <span class="auth-logo-text">Budgeter</span>
+        </div>
 
-    <label for="psw"><b>Password: </b></label>
-    <input type="password" placeholder="Enter Password" name="password" id="psw" required>
+        <h1 class="auth-title">Create your account</h1>
+        <p class="auth-subtitle">Start tracking your finances today</p>
 
-    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
-    <button type="submit" class="registerbtn">Register</button>
+        {% if error %}
+        <div class="alert alert-error">
+            ⚠️ {{ error }}
+        </div>
+        {% endif %}
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" id="register-form">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Choose a username"
+                    autocomplete="username"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a strong password"
+                    autocomplete="new-password"
+                    required
+                >
+                <p class="input-hint">At least 8 characters recommended.</p>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-full" style="justify-content:center; margin-top:0.5rem;">
+                Create Account
+            </button>
+        </form>
+
+        <p style="font-size:0.75rem; color:var(--text-muted); text-align:center; margin-top:1rem;">
+            By registering you agree to our <a href="#" style="color:var(--primary);">Terms &amp; Privacy</a>.
+        </p>
+
+        <div class="auth-footer-text">
+            Already have an account? <a href="{% url 'login' %}">Sign in</a>
+        </div>
+
     </div>
+</div>
 
-    <div class="container signin">
-    <p>Already have an account? <a href="#">Sign in</a>.</p>
-    </div>
-</form> 
-
-    <footer id="footer"></footer>
-    <script src="{% static 'navbar_footer.js' %}"></script>
 </body>
 </html>

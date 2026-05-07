@@ -1,22 +1,168 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Home</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Budgeter</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
-    <h1>Home</h1>
+<div id="navbar"></div>
 
-    <form method="post" action="/logout/">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-    </form>
-    <div id="navbar"></div>
+<div class="page-wrapper">
 
-    <footer id="footer"></footer>
+    <header class="page-header">
+        <div class="page-header-title">
+            <h1>Dashboard</h1>
+            <p>Welcome back, {{ request.user.username }} 👋</p>
+        </div>
+        <div class="page-header-actions">
+            <a href="/transactions/" class="btn btn-primary btn-sm">+ Add Transaction</a>
+        </div>
+    </header>
 
-    <script src="{% static 'navbar_footer.js' %}"></script>
+    <main class="main-content">
+
+        <!-- Summary Stats -->
+        <div class="stats-grid" id="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon green">💰</div>
+                <div class="stat-info">
+                    <div class="stat-label">Total Income</div>
+                    <div class="stat-value income" id="stat-income">—</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon red">💸</div>
+                <div class="stat-info">
+                    <div class="stat-label">Total Expenses</div>
+                    <div class="stat-value expense" id="stat-expense">—</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon indigo">📊</div>
+                <div class="stat-info">
+                    <div class="stat-label">Net Balance</div>
+                    <div class="stat-value" id="stat-balance">—</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon amber">🔢</div>
+                <div class="stat-info">
+                    <div class="stat-label">Transactions</div>
+                    <div class="stat-value" id="stat-count">—</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="two-col">
+
+            <!-- Recent Transactions -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3>Recent Transactions</h3>
+                        <p>Your last 5 entries</p>
+                    </div>
+                    <a href="/transactions/" class="btn btn-ghost btn-sm">View all</a>
+                </div>
+                <div class="card-body" style="padding:0;">
+                    <table id="recent-table">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-tbody">
+                            <tr><td colspan="4" class="text-muted" style="text-align:center;padding:2rem;">Loading…</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3>Quick Actions</h3>
+                        <p>Jump to any section</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                        <a href="/transactions/" class="btn btn-ghost w-full" style="justify-content:flex-start;">
+                            <span>💳</span> Add a Transaction
+                        </a>
+                        <a href="/create-budget/" class="btn btn-ghost w-full" style="justify-content:flex-start;">
+                            <span>📊</span> Manage Budgets
+                        </a>
+                        <a href="/goals/" class="btn btn-ghost w-full" style="justify-content:flex-start;">
+                            <span>🎯</span> Track Goals
+                        </a>
+                        <a href="/viewreport/" class="btn btn-ghost w-full" style="justify-content:flex-start;">
+                            <span>📈</span> View Reports
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <div id="footer"></div>
+</div>
+
+<script src="{% static 'navbar_footer.js' %}"></script>
+<script>
+(async function () {
+    try {
+        const res = await fetch('/api/transaction/');
+        const data = await res.json();
+
+        // Stats
+        let income = 0, expense = 0;
+        data.forEach(t => {
+            const amt = parseFloat(t.amount);
+            if (t.isIncome) income += amt; else expense += amt;
+        });
+        const balance = income - expense;
+
+        document.getElementById('stat-income').textContent  = '$' + income.toFixed(2);
+        document.getElementById('stat-expense').textContent = '$' + expense.toFixed(2);
+        document.getElementById('stat-count').textContent   = data.length;
+
+        const balEl = document.getElementById('stat-balance');
+        balEl.textContent = (balance >= 0 ? '+' : '') + '$' + balance.toFixed(2);
+        balEl.classList.add(balance >= 0 ? 'income' : 'expense');
+
+        // Recent 5
+        const recent = [...data].reverse().slice(0, 5);
+        const tbody = document.getElementById('recent-tbody');
+        if (recent.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="text-muted" style="text-align:center;padding:2rem;">No transactions yet.</td></tr>';
+        } else {
+            tbody.innerHTML = recent.map(t => `
+                <tr>
+                    <td>${t.description || '—'}</td>
+                    <td><span class="badge badge-indigo">${t.category}</span></td>
+                    <td class="${t.isIncome ? 'text-success' : 'text-danger'} fw-600">
+                        ${t.isIncome ? '+' : '-'}$${parseFloat(t.amount).toFixed(2)}
+                    </td>
+                    <td><span class="badge ${t.isIncome ? 'badge-green' : 'badge-red'}">${t.isIncome ? 'Income' : 'Expense'}</span></td>
+                </tr>
+            `).join('');
+        }
+    } catch (e) {
+        console.error('Dashboard fetch error:', e);
+    }
+})();
+</script>
+
 </body>
 </html>

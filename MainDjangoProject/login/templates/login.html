@@ -1,41 +1,75 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In — Budgeter</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
-    <div id="navbar"></div>
+<div class="auth-page">
+    <div class="auth-card">
 
-    <h1>Login</h1>
+        <div class="auth-logo">
+            <div class="auth-logo-icon">💰</div>
+            <span class="auth-logo-text">Budgeter</span>
+        </div>
 
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
+        <h1 class="auth-title">Welcome back</h1>
+        <p class="auth-subtitle">Sign in to manage your finances</p>
 
-    <form id="user_input" method="post">
-        {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-error">
+            ⚠️ Invalid username or password. Please try again.
+        </div>
+        {% endif %}
+        {% if error %}
+        <div class="alert alert-error">
+            ⚠️ {{ error }}
+        </div>
+        {% endif %}
 
-        <input type="hidden" name="next" value="{{ next }}">
+        <form method="post" id="login-form">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
 
-        <label>Username:</label>
-        <input type="text" name="username"><br><br>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    autocomplete="username"
+                    required
+                >
+            </div>
 
-        <label>Password:</label>
-        <input type="password" name="password"><br><br>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
 
-        <button type="submit">Login</button>
-    </form>
+            <button type="submit" class="btn btn-primary w-full" style="justify-content:center; margin-top:0.5rem;">
+                Sign In
+            </button>
+        </form>
 
-    <br>
-    <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
-    <!-- <script src="{% static 'loginFetch.js' %}"></script> -->
+        <div class="auth-footer-text">
+            Don't have an account? <a href="{% url 'register' %}">Create one</a>
+        </div>
 
-
-    <footer id="footer"></footer>
-    <script src="{% static 'navbar_footer.js' %}"></script>
+    </div>
+</div>
 
 </body>
 </html>

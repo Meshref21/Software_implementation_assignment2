@@ -1,135 +1,181 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Financial Goals</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goals — Budgeter</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-
 <body>
 
-    <form method="post" action="/logout/">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-    </form>
-    <div id="navbar"></div>
+<div id="navbar"></div>
 
-<div class="container">
+<div class="page-wrapper">
 
-    <!-- GOAL LIST SECTION -->
-    <div id="goal-list-section">
+    <header class="page-header">
+        <div class="page-header-title">
+            <h1>Financial Goals</h1>
+            <p>Set targets and track your progress</p>
+        </div>
+        <div class="page-header-actions">
+            <button class="btn btn-primary btn-sm" onclick="showSection('create-goal-section')">
+                + New Goal
+            </button>
+        </div>
+    </header>
 
-        <h1>My Financial Goals</h1>
-
-        <button type="button" onclick="showSection('create-goal-section')">
-            + Add New Goal
-        </button>
-
-        <br><br>
+    <main class="main-content">
 
         {% if messages %}
             {% for message in messages %}
-                <div class="message">
-                    {{ message }}
-                </div>
+            <div class="alert alert-success">✅ {{ message }}</div>
             {% endfor %}
         {% endif %}
 
-        {% if goals %}
-            {% for goal in goals %}
+        <!-- ── Goal List ─────────────────────────────────────── -->
+        <div id="goal-list-section">
+
+            {% if goals %}
+            <div class="goals-grid">
+                {% for goal in goals %}
                 <div class="goal-card">
 
-                    <h3>{{ goal.name }}</h3>
+                    <div class="goal-card-header">
+                        <div>
+                            <div class="goal-card-title">{{ goal.name }}</div>
+                            <div class="goal-amounts">
+                                <span>${{ goal.current_amount }} saved</span>
+                                <span>of ${{ goal.target_amount }}</span>
+                            </div>
+                        </div>
+                        <div class="goal-pie-chart" data-progress="{{ goal.progress_percentage }}">
+                            <div class="goal-pie-inner">{{ goal.progress_percentage }}%</div>
+                        </div>
+                    </div>
 
-                    <p><strong>Target Amount:</strong> ${{ goal.target_amount }}</p>
-                    <p><strong>Current Amount:</strong> ${{ goal.current_amount }}</p>
-                    <p><strong>Deadline:</strong> {{ goal.deadline }}</p>
-                    <p><strong>Progress:</strong> {{ goal.progress_percentage }}%</p>
-
-                    <div class="goal-pie-chart" data-progress="{{ goal.progress_percentage }}">
-                        <div class="goal-pie-inner">
-                            {{ goal.progress_percentage }}%
+                    <!-- Progress Bar -->
+                    <div>
+                        <div class="progress-track">
+                            <div
+                                class="progress-fill {% if goal.progress_percentage >= 100 %}green{% elif goal.progress_percentage >= 50 %}amber{% else %}red{% endif %}"
+                                style="width: {{ goal.progress_percentage|default:0 }}%"
+                            ></div>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-top:0.3rem; font-size:0.75rem; color:var(--text-muted);">
+                            <span>{{ goal.progress_percentage }}% complete</span>
+                            <span>Deadline: {{ goal.deadline }}</span>
                         </div>
                     </div>
 
                     {% if goal.is_completed %}
-                        <p class="completed">Completed!</p>
+                        <span class="badge badge-green" style="align-self:flex-start;">🎉 Completed</span>
                     {% else %}
-                        <p class="in-progress">In Progress</p>
+                        <span class="badge badge-amber" style="align-self:flex-start;">⏳ In Progress</span>
                     {% endif %}
 
-                    <!-- UPDATE FORM -->
-                    <form method="POST" action="{% url 'update_goal_progress' goal.id %}">
+                    <!-- Update Progress -->
+                    <form method="POST" action="{% url 'update_goal_progress' goal.id %}" class="goal-update-form">
                         {% csrf_token %}
-
-                        <label>Update Current Amount:</label><br>
-                        <input 
-                            type="number" 
-                            step="0.01" 
-                            name="current_amount" 
-                            value="{{ goal.current_amount }}" 
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="current_amount"
+                            value="{{ goal.current_amount }}"
+                            min="0"
                             required
+                            placeholder="Update amount"
                         >
-
-                        <button type="submit">Update Progress</button>
+                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
                     </form>
 
-                    <br>
-
-                    <!-- DELETE FORM -->
+                    <!-- Delete -->
                     <form method="POST" action="{% url 'delete_goal' goal.id %}" onsubmit="return confirmDelete();">
                         {% csrf_token %}
-                        <button type="submit" class="delete-btn">Delete Goal</button>
+                        <button type="submit" class="btn btn-danger btn-sm">🗑️ Delete Goal</button>
                     </form>
 
                 </div>
-            {% endfor %}
-        {% else %}
-            <p>You have no goals yet. Click "Add New Goal" to create one.</p>
-        {% endif %}
+                {% endfor %}
+            </div>
 
-    </div>
+            {% else %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🎯</div>
+                        <p>You have no goals yet.</p>
+                        <button class="btn btn-primary mt-2" onclick="showSection('create-goal-section')">
+                            + Create Your First Goal
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
 
+        </div>
 
-    <!-- CREATE GOAL SECTION -->
-    <div id="create-goal-section" class="form-section" style="display: none;">
+        <!-- ── Create Goal Form ──────────────────────────────── -->
+        <div id="create-goal-section" style="display:none; max-width:560px;">
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h3>New Financial Goal</h3>
+                        <p>Define your target and deadline</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'create_goal' %}">
+                        {% csrf_token %}
 
-        <h1>Create Financial Goal</h1>
+                        <div class="form-group">
+                            <label for="goal-name">Goal Name</label>
+                            <input
+                                type="text"
+                                id="goal-name"
+                                name="name"
+                                placeholder="e.g. Emergency Fund, New Laptop…"
+                                required
+                            >
+                        </div>
 
-        <form method="POST" action="{% url 'create_goal' %}">
-            {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="target_amount">Target Amount</label>
+                                <input
+                                    type="number"
+                                    id="target_amount"
+                                    name="target_amount"
+                                    placeholder="0.00"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="deadline">Deadline</label>
+                                <input type="date" id="deadline" name="deadline" required>
+                            </div>
+                        </div>
 
-            <label>Goal Name:</label><br>
-            <input type="text" name="name" required>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Create Goal</button>
+                            <button type="button" class="btn btn-ghost" onclick="showSection('goal-list-section')">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-            <br><br>
+    </main>
 
-            <label>Target Amount:</label><br>
-            <input type="number" step="0.01" name="target_amount" required>
-
-            <br><br>
-
-            <label>Deadline:</label><br>
-            <input type="date" name="deadline" required>
-
-            <br><br>
-
-            <button type="submit">Create Goal</button>
-            <button type="button" class="cancel-btn" onclick="showSection('goal-list-section')">
-                Cancel
-            </button>
-        </form>
-
-    </div>
-
+    <div id="footer"></div>
 </div>
 
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{% static 'goals.js' %}"></script>
-
-    <footer id="footer"></footer>
-    <script src="{% static 'navbar_footer.js' %}"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'goals.js' %}"></script>
+<script src="{% static 'navbar_footer.js' %}"></script>
 </body>
 </html>

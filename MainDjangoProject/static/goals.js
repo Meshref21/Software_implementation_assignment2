@@ -1,31 +1,35 @@
 function showSection(sectionId) {
-    const goalListSection = document.getElementById('goal-list-section');
-    const createGoalSection = document.getElementById('create-goal-section');
-
-    if (goalListSection) {
-        goalListSection.style.display = 'none';
-    }
-
-    if (createGoalSection) {
-        createGoalSection.style.display = 'none';
-    }
-
-    const selectedSection = document.getElementById(sectionId);
-
-    if (selectedSection) {
-        selectedSection.style.display = 'block';
-    }
+    ['goal-list-section', 'create-goal-section'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+    });
+    const target = document.getElementById(sectionId);
+    if (target) target.style.display = sectionId === 'goals-grid' ? 'grid' : 'block';
 }
-
 
 function confirmDelete() {
-    return confirm("Are you sure you want to delete this goal?");
+    return confirm('Are you sure you want to delete this goal?');
 }
 
+function initializePieCharts() {
+    document.querySelectorAll('.goal-pie-chart').forEach(chart => {
+        let progress = parseFloat(chart.dataset.progress) || 0;
+        progress = Math.min(Math.max(progress, 0), 100);
+
+        // Color based on progress
+        let fillColor = '#f43f5e';   // red  < 33%
+        if (progress >= 66) fillColor = '#10b981';  // green
+        else if (progress >= 33) fillColor = '#f59e0b'; // amber
+
+        chart.style.background = `conic-gradient(
+            ${fillColor} 0% ${progress}%,
+            #e2e8f0 ${progress}% 100%
+        )`;
+    });
+}
 
 function initializeGoalPage() {
     const urlParams = new URLSearchParams(window.location.search);
-
     if (urlParams.get('show') === 'create') {
         showSection('create-goal-section');
     } else {
@@ -33,34 +37,7 @@ function initializeGoalPage() {
     }
 }
 
-
-function initializePieCharts() {
-    const charts = document.querySelectorAll(".goal-pie-chart");
-
-    charts.forEach(function (chart) {
-        let progress = parseFloat(chart.dataset.progress);
-
-        if (isNaN(progress)) {
-            progress = 0;
-        }
-
-        if (progress < 0) {
-            progress = 0;
-        }
-
-        if (progress > 100) {
-            progress = 100;
-        }
-
-        chart.style.background = `conic-gradient(
-            #4caf50 0% ${progress}%,
-            #e0e0e0 ${progress}% 100%
-        )`;
-    });
-}
-
-
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', () => {
     initializeGoalPage();
     initializePieCharts();
 });
