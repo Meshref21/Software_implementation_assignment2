@@ -1,9 +1,10 @@
 from django.db import models
-
-# Create your models here.
+from django.contrib.auth.models import User
 
 
 class Budget(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="budgets")
+
     category = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     period = models.CharField(
@@ -27,4 +28,4 @@ class Budget(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.category} - {self.amount} ({self.period})"
+        return f"{self.user.username} - {self.category} - {self.amount} ({self.period})"
