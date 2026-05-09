@@ -9,11 +9,15 @@
 </head>
 <body>
 
+{% include 'includes/navbar.html' %}
+
+<div class="page-wrapper">
+
 <div class="auth-page">
     <div class="auth-card">
 
         <div class="auth-logo">
-            <div class="auth-logo-icon">💰</div>
+            <div class="auth-logo-icon"></div>
             <span class="auth-logo-text">Budgeter</span>
         </div>
 
@@ -80,7 +84,7 @@
         </form>
 
         <p style="font-size:0.75rem; color:var(--text-muted); text-align:center; margin-top:1rem;">
-            By registering you agree to our <a href="#" style="color:var(--primary);">Terms &amp; Privacy</a>.
+            By registering you agree to our <a href="#" style="color:var(--brand-option);">Terms &amp; Privacy</a>.
         </p>
 
         <div class="auth-footer-text">
@@ -88,6 +92,10 @@
         </div>
 
     </div>
+</div>
+
+{% include 'includes/footer.html' %}
+<script src="{% static 'js/navbar.js' %}"></script>
 </div>
 
 </body>

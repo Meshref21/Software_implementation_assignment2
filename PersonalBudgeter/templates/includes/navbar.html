@@ -1,0 +1,74 @@
+{% load static %}
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <div class="navbar-inner">
+
+    <!-- Brand (left) -->
+    <div class="sidebar-brand">
+      <a href="{% url 'home' %}">
+        <div class="sidebar-brand-icon" aria-hidden="true">
+          <!-- wallet / logo SVG -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2 7C2 5.89543 2.89543 5 4 5H20C21.1046 5 22 5.89543 22 7V17C22 18.1046 21.1046 19 20 19H4C2.89543 19 2 18.1046 2 17V7Z" stroke="currentColor" stroke-opacity="0.9" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M16 12C16.5523 12 17 11.5523 17 11C17 10.4477 16.5523 10 16 10C15.4477 10 15 10.4477 15 11C15 11.5523 15.4477 12 16 12Z" fill="currentColor"/>
+          </svg>
+        </div>
+      </a>
+      <div>
+        <a href="{% url 'home' %}" class="sidebar-brand-text">Budgeter</a>
+        <div class="sidebar-brand-sub">Manage your money</div>
+      </div>
+    </div>
+
+    <!-- Center links -->
+    <div class="sidebar-nav" role="menubar" aria-label="Primary">
+      <a href="{% url 'home' %}" class="{% if request.path == '/' or request.path == '/dashboard/' %}active{% endif %}">
+        <!-- home icon -->
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V9.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Dashboard
+      </a>
+      <a href="{% url 'transactions' %}" class="{% if request.path|slice:0:13 == '/transactions' %}active{% endif %}">
+        <!-- card icon -->
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M2 10h20" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Transactions
+      </a>
+      <a href="{% url 'create_budget' %}" class="{% if request.path|slice:0:8 == '/budgets' %}active{% endif %}">
+        <!-- chart icon -->
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 3v18h18" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 13v6M12 9v10M17 5v14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Budgets
+      </a>
+      <a href="{% url 'goals' %}" class="{% if request.path|slice:0:6 == '/goals' %}active{% endif %}">
+        <!-- target icon -->
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.2"/><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.2"/><path d="M12 7v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Goals
+      </a>
+      <a href="{% url 'reports' %}" class="{% if request.path|slice:0:8 == '/reports' %}active{% endif %}">
+        <!-- report icon -->
+        <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M3 3h18v18H3z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 14v4M11 10v8M15 6v12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Reports
+      </a>
+    </div>
+
+    <!-- Right actions -->
+    <div class="sidebar-footer">
+      {% if user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="btn btn-ghost" title="Profile">
+          <!-- user icon -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 21c0-3.866 3.582-7 8-7s8 3.134 8 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Profile
+        </a>
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+          {% csrf_token %}
+          <button class="btn btn-ghost" type="submit" title="Sign out">
+            <!-- logout icon -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 17l5-5-5-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M21 12H9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 19H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Sign out
+          </button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-ghost">Sign in</a>
+        <a href="{% url 'register' %}" class="btn btn-primary">Create account</a>
+      {% endif %}
+    </div>
+
+  </div>
+</nav>

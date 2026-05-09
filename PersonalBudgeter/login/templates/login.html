@@ -9,11 +9,15 @@
 </head>
 <body>
 
+{% include 'includes/navbar.html' %}
+
+<div class="page-wrapper">
+
 <div class="auth-page">
     <div class="auth-card">
 
         <div class="auth-logo">
-            <div class="auth-logo-icon">💰</div>
+            <div class="auth-logo-icon"></div>
             <span class="auth-logo-text">Budgeter</span>
         </div>
 
@@ -69,6 +73,10 @@
         </div>
 
     </div>
+</div>
+
+{% include 'includes/footer.html' %}
+<script src="{% static 'js/navbar.js' %}"></script>
 </div>
 
 </body>

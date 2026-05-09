@@ -44,7 +44,7 @@
 </head>
 <body>
 
-<div id="navbar"></div>
+{% include 'includes/navbar.html' %}
 
 <div class="page-wrapper">
 
@@ -82,102 +82,3 @@
             </div>
         </div>
 
-        <div class="report-grid">
-
-            <!-- Filter Panel -->
-            <div class="card">
-                <div class="card-header">
-                    <div>
-                        <h3>Filter Report</h3>
-                        <p>Select a date range to analyze</p>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <form id="input_date_form">
-
-                        <div class="form-group">
-                            <label for="start_date">Start Date</label>
-                            <input type="date" id="start_date" name="startdate">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="end_date">End Date</label>
-                            <input type="date" id="end_date" name="enddate">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="chart-type">Chart Type</label>
-                            <select id="chart-type">
-                                <option value="pie">Pie Chart</option>
-                                <option value="bar">Bar Chart</option>
-                                <option value="doughnut">Doughnut Chart</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="filter-type">Show</label>
-                            <select id="filter-type">
-                                <option value="all">All Transactions</option>
-                                <option value="expense">Expenses Only</option>
-                                <option value="income">Income Only</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-full" style="justify-content:center;">
-                            📈 Generate Report
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Chart Panel -->
-            <div class="card chart-card">
-                <div class="card-header">
-                    <div>
-                        <h3 id="chart-title">Spending by Category</h3>
-                        <p id="chart-subtitle">Generate a report to see your data</p>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div id="chart-placeholder">
-                        <div class="icon">📊</div>
-                        <p>Select a date range and click<br><strong>Generate Report</strong></p>
-                    </div>
-                    <div id="chart-wrapper" style="display:none; width:100%; max-width:420px;">
-                        <canvas id="myChart"></canvas>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Breakdown Table -->
-        <div class="card mt-2" id="breakdown-card" style="display:none;">
-            <div class="card-header">
-                <h3>Category Breakdown</h3>
-            </div>
-            <div style="overflow-x:auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Category</th>
-                            <th>Transactions</th>
-                            <th>Total Amount</th>
-                            <th>Share</th>
-                        </tr>
-                    </thead>
-                    <tbody id="breakdown-tbody"></tbody>
-                </table>
-            </div>
-        </div>
-
-    </main>
-
-    <div id="footer"></div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'viewReportFetch.js' %}"></script>
-<script src="{% static 'navbar_footer.js' %}"></script>
-</body>
-</html>

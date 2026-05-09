@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<div id="navbar"></div>
+{% include 'includes/navbar.html' %}
 
 <div class="page-wrapper">
 
@@ -37,79 +37,3 @@
                     <form method="POST">
                         {% csrf_token %}
 
-                        <div class="form-group">
-                            <label for="category">Category</label>
-                            <select id="category" name="category" required>
-                                <option value="food"          {% if budget.category == "food" %}selected{% endif %}>🍔 Food</option>
-                                <option value="transport"     {% if budget.category == "transport" %}selected{% endif %}>🚗 Transport</option>
-                                <option value="entertainment" {% if budget.category == "entertainment" %}selected{% endif %}>🎬 Entertainment</option>
-                                <option value="bills"         {% if budget.category == "bills" %}selected{% endif %}>🧾 Bills</option>
-                                <option value="shopping"      {% if budget.category == "shopping" %}selected{% endif %}>🛍️ Shopping</option>
-                                <option value="other"         {% if budget.category == "other" %}selected{% endif %}>📦 Other</option>
-                            </select>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="amount">Budget Amount</label>
-                                <input
-                                    type="number"
-                                    id="amount"
-                                    name="amount"
-                                    value="{{ budget.amount }}"
-                                    min="0"
-                                    step="0.01"
-                                    required
-                                >
-                            </div>
-                            <div class="form-group">
-                                <label for="remaining_amount">Remaining Amount</label>
-                                <input
-                                    type="number"
-                                    id="remaining_amount"
-                                    name="remaining_amount"
-                                    value="{{ budget.remaining_amount }}"
-                                    min="0"
-                                    step="0.01"
-                                    required
-                                >
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="period">Period</label>
-                            <select id="period" name="period" required>
-                                <option value="weekly"  {% if budget.period == "weekly" %}selected{% endif %}>Weekly</option>
-                                <option value="monthly" {% if budget.period == "monthly" %}selected{% endif %}>Monthly</option>
-                                <option value="yearly"  {% if budget.period == "yearly" %}selected{% endif %}>Yearly</option>
-                            </select>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="start_date">Start Date</label>
-                                <input type="date" id="start_date" name="start_date" value="{{ budget.start_date }}" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="end_date">End Date</label>
-                                <input type="date" id="end_date" name="end_date" value="{{ budget.end_date }}" required>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-primary">Update Budget</button>
-                            <a href="{% url 'create_budget' %}" class="btn btn-ghost">Cancel</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <div id="footer"></div>
-</div>
-
-<script src="{% static 'navbar_footer.js' %}"></script>
-</body>
-</html>
