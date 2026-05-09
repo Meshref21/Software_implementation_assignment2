@@ -1,37 +1,36 @@
 /* ============================================================
-   Personal Budgeter — Dark Theme Redesign
-   - Converted overall UI to a premium dark theme with higher
-     contrast for readability.
-   - Kept class names and layout tokens to minimize template changes.
-   - Improved button, form, and card styles for a modern look.
+   Personal Budgeter — Dark Theme Redesign (Navbar: top centered + fixed footer)
+   - Navbar moved to top center with horizontal options
+   - Navbar and footer fixed
+   - Three-color palette applied: background/text, buttons, options
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 :root {
-    /* Dark theme tokens */
-    --bg:            #0b0f16; /* page background */
-    --sidebar-bg:    #07090c; /* navbar / sidebar */
-    --sidebar-hover: #0f1724;
-    --sidebar-active:#8b5cf6; /* accent */
-    --card-bg:       #0f1724; /* card surfaces */
-    --primary:       #8b5cf6; /* primary accent */
-    --primary-600:   #7c3aed;
-    --primary-light: rgba(139,92,246,0.12);
-    --success:       #10b981;
-    --success-light: rgba(16,185,129,0.08);
-    --danger:        #ef4444;
-    --danger-light:  rgba(239,68,68,0.08);
-    --warning:       #f59e0b;
-    --warning-light: rgba(245,158,11,0.06);
-    --text:          #e6eef8; /* main text */
-    --text-muted:    #9aa6b2; /* subdued text */
-    --border:        rgba(255,255,255,0.06);
-    --shadow-sm:     0 4px 14px rgba(2,6,23,0.6);
-    --shadow-md:     0 10px 30px rgba(2,6,23,0.7);
-    --radius:        12px;
-    --sidebar-w:     260px;
-    --glass-alpha:   rgba(255,255,255,0.03);
+    /* Three-color palette (user requested):
+       - --bg-base: background / text base (dark)
+       - --brand-button: primary buttons
+       - --brand-option: navigation/options accent
+    */
+    --bg-base:        #071028; /* deep navy for background */
+    --card-bg:        #0b1724; /* slightly lighter card surface */
+    --brand-button:   #06B6D4; /* cyan — buttons */
+    --brand-button-600:#0891B2;
+    --brand-option:   #8B5CF6; /* violet — nav/options */
+    --text:           #E6EEF8; /* main text */
+    --text-muted:     #9AA6B2;
+
+    /* legacy tokens (kept for compatibility) */
+    --primary:        var(--brand-button);
+    --primary-600:    var(--brand-button-600);
+    --sidebar-bg:     transparent; /* we no longer use a left sidebar */
+    --sidebar-hover:  rgba(255,255,255,0.02);
+    --border:         rgba(255,255,255,0.06);
+    --shadow-sm:      0 6px 18px rgba(2,6,23,0.6);
+    --shadow-md:      0 12px 36px rgba(2,6,23,0.7);
+    --radius:         12px;
+    --navbar-h:       72px; /* navbar height — used to offset page content */
 }
 
 /* Reset & Base */
@@ -39,7 +38,7 @@
 html,body { height: 100%; }
 body {
     font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    background: radial-gradient(1200px 600px at 10% 10%, rgba(139,92,246,0.06), transparent), var(--bg);
+    background: linear-gradient(180deg, rgba(7,16,36,0.6), var(--bg-base));
     color: var(--text);
     min-height: 100vh;
     display: flex;
@@ -50,116 +49,140 @@ body {
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 
-/* Navbar / Sidebar */
+/* ------------------------ NAVBAR (TOP, CENTERED) ------------------------ */
 #navbar {
-    width: var(--sidebar-w);
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00)), var(--sidebar-bg);
+    width: 100%;
     position: fixed;
     top: 0; left: 0;
-    height: 100vh;
-    display: flex; flex-direction: column; padding: 0; z-index: 100;
-    overflow-y: auto; border-right: 1px solid var(--border);
+    height: var(--navbar-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    backdrop-filter: blur(6px);
+    background: linear-gradient(180deg, rgba(11,23,36,0.6), rgba(11,23,36,0.45));
+    border-bottom: 1px solid var(--border);
 }
 
-.sidebar-brand { display:flex; align-items:center; gap:0.75rem; padding:1.5rem 1.25rem; }
-.sidebar-brand-icon { width:40px; height:40px; background: linear-gradient(135deg,var(--primary),var(--primary-600)); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; box-shadow: var(--shadow-sm); }
+/* inner container keeps nav items centered and constrained */
+#navbar .navbar-inner {
+    width: min(1100px, 96%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+/* brand area (left) */
+.sidebar-brand { display:flex; align-items:center; gap:0.75rem; }
+.sidebar-brand-icon { width:40px; height:40px; background: linear-gradient(135deg,var(--brand-option),var(--brand-button)); border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.05rem; box-shadow: var(--shadow-sm); }
 .sidebar-brand-text { font-size:1rem; font-weight:700; color:var(--text); }
 .sidebar-brand-sub { font-size:0.7rem; color:var(--text-muted); }
 
-/* Page wrapper shifted to the right of sidebar */
-.page-wrapper { margin-left: var(--sidebar-w); padding: 2.5rem; width: calc(100% - var(--sidebar-w)); }
+/* main nav (center) */
+.sidebar-nav {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.sidebar-nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: 10px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: background 0.12s ease, color 0.12s ease, transform 0.08s ease;
+}
+
+.sidebar-nav a:hover {
+    background: rgba(255,255,255,0.02);
+    color: var(--text);
+    transform: translateY(-2px);
+}
+
+.sidebar-nav a.active {
+    background: linear-gradient(90deg, rgba(139,92,246,0.12), rgba(6,182,212,0.06));
+    color: var(--brand-option);
+    box-shadow: 0 6px 20px rgba(11,18,38,0.45);
+}
+
+/* actions (right) */
+.sidebar-footer { display:flex; gap:0.5rem; align-items:center; }
+
+/* ------------------------ PAGE LAYOUT ADJUSTMENTS ------------------------ */
+/* Remove sidebar left offset and account for top navbar height */
+.page-wrapper { margin-left: 0; padding: calc(var(--navbar-h) + 2rem) 2.5rem 6.5rem; width: 100%; }
 
 .page-header { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; margin-bottom:1.5rem; }
 .page-header-title h1 { font-size:1.6rem; margin-bottom:0.25rem; }
 .page-header-title p { color:var(--text-muted); font-size:0.95rem; }
 
-/* Cards */
+/* ------------------------ CARDS, BUTTONS, FORMS (use 3-color palette) ------------------------ */
 .card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow:hidden; }
 .card-header { padding:1rem 1.25rem; border-bottom: 1px solid rgba(255,255,255,0.02); display:flex; justify-content:space-between; align-items:center; }
 .card-body { padding:1rem 1.25rem; }
 
-/* Buttons */
 .btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.55rem 0.9rem; border-radius:10px; font-weight:600; font-size:0.95rem; cursor:pointer; border:1px solid transparent; background:transparent; color:var(--text); }
-.btn-primary { background: linear-gradient(90deg,var(--primary),var(--primary-600)); color: #fff; border:none; box-shadow: 0 6px 20px rgba(140,85,255,0.12); }
-.btn-primary.btn-sm { padding:0.45rem 0.65rem; font-size:0.85rem; border-radius:8px; }
+.btn-primary { background: linear-gradient(90deg, var(--brand-button), var(--brand-button-600)); color: #04202a; border:none; box-shadow: 0 6px 20px rgba(6,182,212,0.08); }
 .btn-ghost { background: transparent; border:1px solid rgba(255,255,255,0.04); color:var(--text); }
-.btn-ghost.btn-sm { padding:0.4rem 0.6rem; }
+.btn-primary.btn-sm { padding:0.45rem 0.65rem; font-size:0.85rem; border-radius:8px; }
 .btn:active { transform: translateY(1px); }
 
-/* Alerts */
-.alert { padding:0.75rem 1rem; border-radius:10px; margin-bottom:1rem; font-weight:500; }
-.alert-success { background: rgba(16,185,129,0.07); color: #b7f3d8; border:1px solid rgba(16,185,129,0.12); }
-.alert-error { background: rgba(239,68,68,0.06); color: #ffd5d5; border:1px solid rgba(239,68,68,0.08); }
-
-/* Typography */
-h1,h2,h3,h4 { color:var(--text); }
-p, label, input, select, textarea { color:var(--text); }
-.text-muted { color:var(--text-muted); }
+/* Ensure option-like elements use the option color */
+.text-option { color: var(--brand-option); font-weight:700; }
 
 /* Forms */
-.form-group { display:flex; flex-direction:column; gap:0.35rem; margin-bottom:0.75rem; }
 input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="date"], select, textarea {
     background: rgba(255,255,255,0.02);
     border: 1px solid rgba(255,255,255,0.04);
     padding:0.6rem 0.75rem; border-radius:8px; outline:none; color:var(--text); font-size:0.95rem;
 }
-input::placeholder, textarea::placeholder { color: rgba(230,238,248,0.55); }
-input:focus, select:focus, textarea:focus { border-color: var(--primary-600); box-shadow: 0 6px 18px rgba(124,58,237,0.08); }
+input:focus, select:focus, textarea:focus { border-color: var(--brand-button-600); box-shadow: 0 6px 18px rgba(6,182,212,0.06); }
 
-.form-row { display:flex; gap:1rem; }
-.form-actions { display:flex; gap:0.5rem; align-items:center; }
+/* ------------------------ NAVBAR / FOOTER FIXED ------------------------ */
+/* Footer fixed to bottom */
+#footer .footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    width: 100%;
+    background: linear-gradient(180deg, rgba(11,23,36,0.6), rgba(11,23,36,0.5));
+    border-top: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted);
+    z-index: 250;
+}
 
-/* Tables */
-table { width:100%; border-collapse:collapse; color:var(--text); }
-thead th { text-align:left; padding:0.75rem 1rem; font-size:0.9rem; color:var(--text-muted); border-bottom:1px solid rgba(255,255,255,0.02); }
-tbody td { padding:0.75rem 1rem; border-bottom:1px solid rgba(255,255,255,0.02); }
+/* Add bottom spacing so content isn't hidden behind footer */
+/* page-wrapper already has bottom padding of 6.5rem to account for footer */
 
-/* Stats / Cards */
-.stats-grid { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:1rem; margin-bottom:1.25rem; }
+/* ------------------------ TABLES, STATS, GOALS - minor color tweaks ------------------------ */
 .stat-card { background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent); padding:1rem; border-radius:10px; display:flex; gap:0.75rem; align-items:center; border:1px solid rgba(255,255,255,0.02); }
 .stat-icon { width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:10px; font-size:1.15rem; }
-.stat-icon.green { background: linear-gradient(90deg, rgba(16,185,129,0.12), rgba(16,185,129,0.06)); }
-.stat-icon.red { background: linear-gradient(90deg, rgba(239,68,68,0.08), rgba(239,68,68,0.03)); }
-.stat-info .stat-label { color:var(--text-muted); font-size:0.8rem; }
+.stat-icon.indigo { background: linear-gradient(90deg, rgba(139,92,246,0.12), rgba(139,92,246,0.04)); }
+.stat-icon.green  { background: linear-gradient(90deg, rgba(6,182,212,0.12), rgba(6,182,212,0.04)); }
 .stat-info .stat-value { font-size:1.1rem; font-weight:700; }
 
-/* Goals */
-.goals-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:1rem; }
-.goal-card { display:flex; flex-direction:column; gap:0.75rem; padding:1rem; }
-.goal-card-header { display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
-.goal-card-title { font-weight:700; }
-.goal-pie-chart { width:48px; height:48px; border-radius:50%; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); display:flex; align-items:center; justify-content:center; font-size:0.85rem; color:var(--text-muted); }
+/* small helpers */
+.text-muted { color:var(--text-muted); }
+.text-primary { color: var(--brand-button); }
 
-/* Badges */
-.badge { padding:0.25rem 0.5rem; border-radius:999px; font-size:0.8rem; font-weight:600; }
-.badge-green { background: rgba(16,185,129,0.12); color:#aaf4d3; }
-.badge-amber { background: rgba(245,158,11,0.08); color:#ffebc9; }
-
-/* Auth pages */
-.auth-page { height:100vh; display:flex; align-items:center; justify-content:center; width:100%; padding:2rem; background: transparent; }
-.auth-card { width:420px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid var(--border); padding:1.5rem; border-radius:14px; box-shadow: var(--shadow-md); }
-.auth-logo { display:flex; align-items:center; gap:0.6rem; margin-bottom:0.75rem; }
-.auth-logo-icon { width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:10px; background: linear-gradient(135deg,var(--primary),var(--primary-600)); box-shadow: 0 8px 26px rgba(120,70,255,0.08); }
-.auth-logo-text { font-weight:800; font-size:1.05rem; }
-.auth-title { font-size:1.25rem; margin-bottom:0.25rem; }
-.auth-subtitle { color:var(--text-muted); margin-bottom:1rem; }
-.auth-footer-text { color:var(--text-muted); text-align:center; margin-top:1rem; }
-
-/* Responsive */
+/* ------------------------ RESPONSIVE ------------------------ */
 @media (max-width: 900px) {
-    #navbar { position:relative; width:100%; height:auto; border-right:none; }
-    .page-wrapper { margin-left:0; width:100%; padding:1rem; }
+    #navbar { position: relative; height: auto; background: transparent; border-bottom: none; }
+    #navbar .navbar-inner { flex-direction: column; gap: 0.5rem; padding: 0.6rem 0; }
+    .sidebar-nav { flex-wrap: wrap; justify-content:center; }
+    .page-wrapper { padding: calc(var(--navbar-h) + 1rem) 1rem 6.5rem; }
     .stats-grid { grid-template-columns: repeat(2,1fr); }
 }
 
-/* Utility classes */
-.mb-3 { margin-bottom:1rem; }
-.text-primary { color: var(--primary); }
-.text-success { color: var(--success); }
-.text-muted { color: var(--text-muted); }
-.w-full { width:100%; }
-
-/* Small tweaks for contrast */
-hr { border: none; height:1px; background: rgba(255,255,255,0.02); margin:1rem 0; }
+/* ------------------------ Accessibility tweaks ------------------------ */
+:focus { outline: none; }
+a:focus { box-shadow: 0 0 0 3px rgba(139,92,246,0.12); border-radius:6px; }
 
 /* End of stylesheet */
