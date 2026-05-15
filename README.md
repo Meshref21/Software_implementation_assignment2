@@ -2,7 +2,6 @@
 
 
 [![Languages](https://img.shields.io/badge/languages-Python%20%7C%20HTML%20%7C%20CSS%20%7C%20JS-blue)]()
-[![Diagrams](https://img.shields.io/badge/diagrams-Architecture%20Diagram%20%7C%20Class%20Diagram%20%7C%20Sequence%20Diagram-orange)]()
 [![Tech Stack](https://img.shields.io/badge/tech%20stack-Frontend%20%7C%20API%20%7C%20Backend%20%7C%20Database-red)]()
 
 Table of Contents
